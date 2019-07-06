@@ -1,4 +1,12 @@
 #!/bin/bash
+#
+#自己练习用的脚本
+#用于激活KVM虚拟化
+#
+#测试环境CentOS7
+#
+#By AndyX 2019-7
+
 echo "options kvm-intel nested=1
 options kvm-intel enable_shadow_vmcs=1
 options kvm-intel enable_apicv=1
