@@ -1,0 +1,9 @@
+---
+- hosts: web
+  remote_user: root
+  tasks:
+    - name: adduser "{{username.name}}"
+      user:
+        name: "{{username.name}}"
+        group: "{{username.group}}"
+        password: "{{username.pwd|password_hash('sha512')}}"

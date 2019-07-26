@@ -1,0 +1,11 @@
+---
+- hosts: web
+  remote_user: root
+  tasks:
+    - name: system loadavgs
+      shell: uptime |awk '{printf("%.2f",$(NF-2))}'
+      register: result
+    - service:
+        name: httpd
+        state: stopped
+      when: result.stdout|float > 0.7

@@ -1,0 +1,47 @@
+---
+
+# 初始化主机组web,用户root
+- name: 初始化主机组web
+  hosts: web
+  remote_user: root
+
+# 执行任务脚本
+  tasks:
+
+  - name: 安装httpd服务
+    yum:
+      name: httpd
+      state: installed
+
+  - name: 改配置端口8080
+    lineinfile:
+      path: "/etc/httpd/conf/httpd.conf"
+      regexp: "^Listen "
+      line: "Listen 8080"
+
+     #标签 webconf
+    tags: webconf
+     #响应handlers
+    notify:
+      - reload webserver
+
+  - name: 激活HTTPD服务设置为开机自启
+    service:
+      name: httpd
+      enabled: yes
+      state: started
+
+  - name: 从本机复制一个新的index.html到web主目录
+    copy:
+      src: "./index.html"
+      dest: "/var/www/html/"
+      owner: apache
+      group: apache
+      mode: 0644
+
+  handlers:
+    - name: reload webserver
+      service:
+        name: httpd
+        state: restarted
+
